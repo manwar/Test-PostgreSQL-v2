@@ -15,13 +15,14 @@ providing automatic binary discovery, and allowing flexible host/user configurat
 ## Usage with Test::DBIx::Class
 
 ```perl
-use Test::PostgreSQL::v2;
-
-our $pg;
-BEGIN { $pg = Test::PostgreSQL::v2->new() }
-
+use Test::More;
 use Test::DBIx::Class {
-    connect_info => [ $pg->dsn, $pg->user, '' ],
+    schema_class => 'MyApp::Schema',
+    traits       => ['Testpostgresqlv2'],
     deploy_db    => 1,
-}, 'MyResultSet';
+}, qw/:resultsets/;
+
+ok ResultSet('User')->create({ name => 'John' }), 'Created user';
+
+done_testing;
 ```
