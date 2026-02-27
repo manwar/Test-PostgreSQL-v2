@@ -1,6 +1,6 @@
 package Test::DBIx::Class::SchemaManager::Trait::Testpostgresqlv2;
 
-$Test::DBIx::Class::SchemaManager::Trait::Testpostgresqlv2::VERSION   = '2.02';
+$Test::DBIx::Class::SchemaManager::Trait::Testpostgresqlv2::VERSION   = '2.03';
 $Test::DBIx::Class::SchemaManager::Trait::Testpostgresqlv2::AUTHORITY = 'cpan:MANWAR';
 
 use Moose::Role;
@@ -14,7 +14,7 @@ Test::DBIx::Class::SchemaManager::Trait::Testpostgresqlv2 - Use Test::PostgreSQL
 
 =head1 VERSION
 
-Version 2.02
+Version 2.03
 
 =head1 SYNOPSIS
 
@@ -64,8 +64,8 @@ attributes) for L<Test::DBIx::Class> to use when connecting to the schema.
 
 =back
 
-The temporary PostgreSQL instance — including all data files, configuration,
-and logs — is automatically removed when the test process exits, because
+The temporary PostgreSQL instance, including all data files, configuration,
+and logs, is automatically removed when the test process exits, because
 L<Test::PostgreSQL::v2> uses L<File::Temp> with C<CLEANUP =E<gt> 1>.
 
 =head1 INTEGRATION

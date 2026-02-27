@@ -1,6 +1,6 @@
 package Test::PostgreSQL::v2;
 
-$Test::PostgreSQL::v2::VERSION   = '2.02';
+$Test::PostgreSQL::v2::VERSION   = '2.03';
 $Test::PostgreSQL::v2::AUTHORITY = 'cpan:MANWAR';
 
 use strict;
@@ -14,13 +14,15 @@ use Time::HiRes qw(sleep);
 use POSIX qw(:sys_wait_h);
 use File::Temp qw(tempdir);
 
+our $errstr = '';
+
 =head1 NAME
 
 Test::PostgreSQL::v2 - A modern, isolated PostgreSQL executable runner for tests
 
 =head1 VERSION
 
-Version 2.02
+Version 2.03
 
 =head1 SYNOPSIS
 
@@ -80,35 +82,35 @@ instance at compile time to satisfy C<use Test::DBIx::Class>'s import phase:
 =head1 DESCRIPTION
 
 B<Test::PostgreSQL::v2> is a "clean sheet" rewrite designed to replace the
-aging B<Test::PostgreSQL>. It addresses modern Linux environment constraints
+aging L<Test::PostgreSQL>. It addresses modern Linux environment constraints
 (like Ubuntu 24.04+) by isolating sockets in temporary directories and
 correctly discovering modern Postgres binaries.
 
 =head2 CONSTRUCTOR
 
-=head3 new(%args)
+B<new(%args)>
 
 The C<new> method initialises and starts a temporary PostgreSQL instance. It
 performs the following steps:
 
 =over 4
 
-=item 1. B<Binary Discovery>: Searches for C<initdb> and C<postgres>
+=item 1. Binary Discovery: Searches for C<initdb> and C<postgres>
 (or C<postmaster>). It respects the C<POSTGRES_HOME> environment variable
 if set, falling back to the system C<PATH>.
 
-=item 2. B<Workspace Isolation>: Creates a unique C<tempdir> for the data
+=item 2. Workspace Isolation: Creates a unique C<tempdir> for the data
 cluster and unix sockets (via the C<-k> flag). This avoids permission
 conflicts with system-wide PostgreSQL socket directories like
 C</var/run/postgresql>.
 
-=item 3. B<Automatic Port Selection>: If no port is provided, it dynamically
+=item 3. Automatic Port Selection: If no port is provided, it dynamically
 searches for an available port on the specified host.
 
-=item 4. B<Cluster Initialisation>: Runs C<initdb> with C<trust>
+=item 4. Cluster Initialisation: Runs C<initdb> with C<trust>
 authentication and C<--nosync> for maximum test performance.
 
-=item 5. B<Daemonisation & Readiness>: Forks the server process and polls
+=item 5. Daemonisation & Readiness: Forks the server process and polls
 the host/port until the instance is ready to accept connections. If the
 server fails to start, it slurps the C<pg.log> into a C<croak> message for
 immediate debugging.
@@ -136,9 +138,6 @@ The superuser name to be created during C<initdb>.
 B<Returns:> A C<Test::PostgreSQL::v2> object.
 
 =cut
-
-our $errstr = '';
-sub errstr  { return $errstr }
 
 sub new {
     my ($class, %args) = @_;
@@ -262,6 +261,16 @@ sub _new {
     return $self;
 }
 
+=head1 METHODS
+
+=head2 errstr()
+
+Returns last saved error.
+
+=cut
+
+sub errstr  { return $errstr }
+
 =head2 dsn()
 
 Returns a string formatted for L<DBI> connection.
@@ -377,16 +386,6 @@ This module uses L<File::Temp> with C<CLEANUP =E<gt> 1>. All database data,
 configuration files, and logs are B<permanently deleted> when the object is
 destroyed. This is intentional for unit testing but makes the module
 unsuitable for persistent local development databases.
-
-=head1 PACKAGE VARIABLES
-
-=head2 $errstr
-
-Set to a human-readable error message when C<new()> fails and returns
-C<undef>. Cleared to an empty string at the start of each C<new()> call.
-
-    my $pg = Test::PostgreSQL::v2->new()
-        or die $Test::PostgreSQL::v2::errstr;
 
 =head1 ENVIRONMENT VARIABLES
 
