@@ -1,5 +1,12 @@
 Revision history for Test::PostgreSQL::v2
 
+2.02 2026-02-27
+     [IMPROVEMENT]
+     - Added package method errstr() to expose $errstr.
+
+2.01 2026-02-27
+     - Forgot to add: Test::DBIx::Class::SchemaManager::Trait::Testpostgresqlv2
+
 2.00 2026-02-27
      [Incompatible Changes]
      - Complete rewrite. Not a drop-in replacement for Test::PostgreSQL.

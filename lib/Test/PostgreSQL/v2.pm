@@ -1,6 +1,6 @@
 package Test::PostgreSQL::v2;
 
-$Test::PostgreSQL::v2::VERSION   = '2.00';
+$Test::PostgreSQL::v2::VERSION   = '2.02';
 $Test::PostgreSQL::v2::AUTHORITY = 'cpan:MANWAR';
 
 use strict;
@@ -20,7 +20,7 @@ Test::PostgreSQL::v2 - A modern, isolated PostgreSQL executable runner for tests
 
 =head1 VERSION
 
-Version 2.00
+Version 2.02
 
 =head1 SYNOPSIS
 
@@ -138,6 +138,7 @@ B<Returns:> A C<Test::PostgreSQL::v2> object.
 =cut
 
 our $errstr = '';
+sub errstr  { return $errstr }
 
 sub new {
     my ($class, %args) = @_;

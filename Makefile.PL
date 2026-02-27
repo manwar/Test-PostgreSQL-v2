@@ -34,6 +34,10 @@ WriteMakefile(
                 file    => 'lib/Test/PostgreSQL/v2.pm',
                 version => MM->parse_version('lib/Test/PostgreSQL/v2.pm')
             },
+            'Test::DBIx::Class::SchemaManager::Trait::Testpostgresqlv2' => {
+                file    => 'lib/Test/DBIx/Class/SchemaManager/Trait/Testpostgresqlv2.pm',
+                version => MM->parse_version('lib/Test/DBIx/Class/SchemaManager/Trait/Testpostgresqlv2.pm')
+            },
         },
         resources => {
             repository => {
